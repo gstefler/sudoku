@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
             } });
     }
 
-#pragma omp parallel for schedule(dynamic)
+// #pragma omp parallel for schedule(dynamic)
     for (size_t i = 0; i < totalPuzzles; i++)
     {
         try
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
     // print rate in current format
     double rate = elapsed > 0 ? static_cast<double>(totalPuzzles) / elapsed : 0;
 
-    std::cout << "Solved " << totalPuzzles << " puzzles in " << elapsed;
+    std::cout << "\nSolved " << totalPuzzles << " puzzles in " << elapsed;
     switch (format)
     {
     case TimeFormat::Seconds:
