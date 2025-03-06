@@ -22,6 +22,7 @@ std::vector<std::string> readPuzzlesFromFile(const std::string &filename)
 
 int main(int argc, char *argv[])
 {
+    omp_set_dynamic(0);
     const char *defaultPuzzle = "....14....3....2...7..........9...3.6.1.............8.2.....1.4....5.6.....7.8...";
     std::vector<std::string> puzzles;
     bool showResult = false;
@@ -150,7 +151,6 @@ int main(int argc, char *argv[])
         std::cout << std::endl;
     }
 
-    // Print summary
     auto endTime = std::chrono::steady_clock::now();
 
     enum class TimeFormat
@@ -159,8 +159,7 @@ int main(int argc, char *argv[])
         Milliseconds,
         Microseconds
     };
-    
-    // check the elapsed time if it is less than 1 second then print in milliseconds if it is less than 1 millisecond then print in microseconds
+
     auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count();
     auto format = TimeFormat::Seconds;
     if (elapsed < 1)
@@ -174,10 +173,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    // print rate in current format
     double rate = elapsed > 0 ? static_cast<double>(totalPuzzles) / elapsed : 0;
 
-    std::cout << "Solved " << totalPuzzles << " puzzles in " << elapsed;
+    std::cout << "\nSolved " << totalPuzzles << " puzzles in " << elapsed;
     switch (format)
     {
     case TimeFormat::Seconds:
@@ -193,7 +191,6 @@ int main(int argc, char *argv[])
         break;
     }
 
-    // print rate in puzzles/{current format}
     std::cout << " | " << rate << " puzzles/sec" << std::endl;
 
     return 0;
